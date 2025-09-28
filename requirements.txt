@@ -1,0 +1,8 @@
+flask
+gunicorn
+ntscraper
+nltk
+scikit-learn
+streamlit
+selenium
+webdriver-manager
