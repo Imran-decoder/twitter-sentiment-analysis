@@ -44,16 +44,14 @@ def extract_datetime(article):
 def scrape_user_page(username, limit=50, max_scrolls=30, headless=True):
     url = f"https://twitter.com/{username}"
     options = webdriver.ChromeOptions()
-    if headless:
-        options.add_argument("--headless=new")
+    options.add_argument("--headless=new")
+    options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-gpu")
-    options.add_argument("--disable-dev-shm-usage")
-    # optional: set a common user-agent to reduce bot-detection noise
-    options.add_argument(
-        "user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36")
+    options.add_argument("--disable-software-rasterizer")
+    options.binary_location = "/usr/bin/chromium"
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=options)
     wait = WebDriverWait(driver, 15)
 
     driver.get(url)

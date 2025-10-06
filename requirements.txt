@@ -6,3 +6,7 @@ scikit-learn
 streamlit
 selenium
 webdriver-manager
+tensorflow
+pandas
+numpy
+keras
