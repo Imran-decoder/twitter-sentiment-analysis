@@ -5,12 +5,14 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
 # Configure Chrome options
-def get_driver():
+def get_driver(headless=True):
     options = Options()
-    options.add_argument("--headless=new")
+    if headless:
+        options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1920,1080")
 
     # Path for Streamlit Cloud (chromium + chromedriver)
     chrome_bin = "/usr/bin/chromium-browser"
