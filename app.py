@@ -1,6 +1,7 @@
 import os
 os.environ["OBJC_DISABLE_INITIALIZE_FORK_SAFETY"] = "YES"
-
+from packages import ensure_package
+ensure_package()
 import streamlit as st
 import tensorflow as tf
 import numpy as np
