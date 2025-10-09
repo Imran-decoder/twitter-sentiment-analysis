@@ -17,8 +17,8 @@ from twittes_collector import scrape_user_page
 # from reddit_sen import fetch_reddit_posts
 
 # Ensure NLTK data
-# nltk.download("stopwords")
-# nltk.download("punkt")
+nltk.download("stopwords")
+nltk.download("punkt")
 
 # -------------------
 # CONSTANTS
