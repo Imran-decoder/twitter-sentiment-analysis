@@ -76,10 +76,10 @@ from typing import List, Tuple
 # Local imports (if you have these scripts)
 from twittes_collector import scrape_user_page , get_driver
 # from reddit_sen import fetch_reddit_posts
-driver = get_driver()
-driver.get("https://www.reddit.com/r/technology/")
-print(driver.title)
-driver.quit()
+# driver = get_driver()
+# driver.get("https://www.reddit.com/r/technology/")
+# print(driver.title)
+# driver.quit()
 
 # Ensure NLTK data
 nltk.download("stopwords")
