@@ -8,6 +8,68 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 # Configure Chrome options
 def get_driver(headless=True):
+    import os
+    import sys
+    import subprocess
+
+    # --- AUTO-INSTALL REQUIRED PACKAGES ---
+    def ensure_package(package):
+        """Ensure that a package is installed."""
+        try:
+            __import__(package)
+        except ImportError:
+            # Streamlit Cloud often blocks pip installs or apt-get
+            if "STREAMLIT_RUNTIME" in os.environ:
+                print(f"⚠️ Skipping auto-install for {package} (Streamlit Cloud detected)")
+                return
+            print(f"📦 Installing {package} ...")
+            subprocess.run(
+                [sys.executable, "-m", "pip", "install", package],
+                check=False
+            )
+
+    # Only include Python packages (not OS-level ones)
+    for pkg in ["selenium", "webdriver_manager", "chromedriver_binary"]:
+        ensure_package(pkg)
+
+    # --- CHROME SETUP (Linux environments only) ---
+    CHROME_PATHS = ["/usr/bin/google-chrome", "/usr/bin/chromium-browser"]
+    if not any(os.path.exists(path) for path in CHROME_PATHS):
+        print("⚙️ Checking Chrome installation ...")
+        if "STREAMLIT_RUNTIME" in os.environ:
+            print("⚠️ Running inside Streamlit Cloud, skipping Chrome install.")
+        else:
+            try:
+                # Try to install Chrome silently
+                subprocess.run(
+                    ["apt-get", "update", "-y"],
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL
+                )
+                subprocess.run(
+                    ["apt-get", "install", "-y", "google-chrome-stable"],
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL
+                )
+                print("✅ Google Chrome installed successfully.")
+            except Exception as e:
+                print(f"⚠️ Could not auto-install Google Chrome: {e}")
+                print("💡 Please install Chrome manually or use webdriver_manager to handle the driver.")
+
+    # --- VERIFY INSTALLATION ---
+    try:
+        from selenium import webdriver
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.chrome.service import Service
+        from selenium.webdriver.chrome.options import Options
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        from webdriver_manager.chrome import ChromeDriverManager
+        print("✅ Selenium and Chrome WebDriver are ready to use!")
+    except Exception as e:
+        print(f"❌ Selenium setup failed: {e}")
     options = Options()
     if headless:
         options.add_argument("--headless=new")
