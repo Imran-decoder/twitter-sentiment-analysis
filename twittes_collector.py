@@ -1,3 +1,32 @@
+import os
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+
+# Configure Chrome options
+def get_driver():
+    options = Options()
+    options.add_argument("--headless=new")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+
+    # Path for Streamlit Cloud (chromium + chromedriver)
+    chrome_bin = "/usr/bin/chromium-browser"
+    driver_bin = "/usr/bin/chromedriver"
+
+    if os.path.exists(chrome_bin) and os.path.exists(driver_bin):
+        print("✅ Using system Chromium and Chromedriver")
+        options.binary_location = chrome_bin
+        service = Service(driver_bin)
+        driver = webdriver.Chrome(service=service, options=options)
+    else:
+        print("⚙️ Using webdriver_manager fallback")
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    return driver
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
