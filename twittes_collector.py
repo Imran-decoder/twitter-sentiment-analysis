@@ -1,4 +1,6 @@
 import os
+
+import chromedriver_binary
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -26,7 +28,10 @@ def get_driver(headless=True):
     else:
         print("⚙️ Using webdriver_manager fallback")
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-
+    driver = webdriver.Chrome(
+        service=Service(chromedriver_binary.chromedriver_filename),
+        options=options
+    )
     return driver
 
 from selenium import webdriver

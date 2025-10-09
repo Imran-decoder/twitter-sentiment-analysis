@@ -9,3 +9,4 @@ gunicorn
 ntscraper
 scikit-learn
 keras
+chromedriver_binary

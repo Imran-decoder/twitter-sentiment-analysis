@@ -21,7 +21,7 @@ def ensure_package(package):
         )
 
 # Only include Python packages (not OS-level ones)
-for pkg in ["selenium", "webdriver_manager"]:
+for pkg in ["selenium", "webdriver_manager","chromedriver_binary"]:
     ensure_package(pkg)
 
 # --- CHROME SETUP (Linux environments only) ---
@@ -75,15 +75,19 @@ from typing import List, Tuple
 
 # Local imports (if you have these scripts)
 from twittes_collector import scrape_user_page
-# from reddit_sen import fetch_reddit_posts
-# driver = get_driver()
-# driver.get("https://www.reddit.com/r/technology/")
-# print(driver.title)
-# driver.quit()
+
 
 # Ensure NLTK data
-nltk.download("stopwords")
-nltk.download("punkt")
+try:
+    nltk.data.find("corpora/stopwords")
+except LookupError:
+    nltk.download("stopwords")
+
+# Only download punkt if not present
+try:
+    nltk.data.find("tokenizers/punkt")
+except LookupError:
+    nltk.download("punkt")
 
 # -------------------
 # CONSTANTS
