@@ -1,6 +1,6 @@
 import os
 os.environ["OBJC_DISABLE_INITIALIZE_FORK_SAFETY"] = "YES"
-import os
+# import os
 import subprocess
 import sys
 
@@ -9,8 +9,12 @@ def ensure_package(package):
     try:
         __import__(package)
     except ImportError:
-        print(f"📦 Installing missing package: {package} ...")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+        # Skip installing if running in Streamlit Cloud
+        if "STREAMLIT_RUNTIME" in os.environ:
+            print(f"⚠️ Skipping auto-install for {package} (Streamlit Cloud)")
+            return
+        print(f"📦 Installing {package} ...")
+        subprocess.run([sys.executable, "-m", "pip", "install", package], check=False)
 
 # Ensure key packages
 for pkg in ["selenium", "webdriver_manager", "chromium-browser"]:
