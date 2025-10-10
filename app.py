@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 
 os.environ["OBJC_DISABLE_INITIALIZE_FORK_SAFETY"] = "YES"
 
@@ -103,6 +104,11 @@ except Exception as e:
 # -------------------
 # Caching
 # -------------------
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+
+chrome_path = "/usr/bin/chromedriver" if os.path.exists("/usr/bin/chromedriver") else ChromeDriverManager().install()
+service = Service(chrome_path)
 @st.cache_resource
 def load_rnn_model():
     return tf.keras.models.load_model(RNN_MODEL_PATH)
